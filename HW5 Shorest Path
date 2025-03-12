@@ -1,0 +1,53 @@
+import heapq
+
+
+class Solution:
+    def __init__(self, start_node, end_node, graph):
+        self.graph = graph
+        self.start_node = start_node
+        self.end_node = end_node
+
+    def outputPath(self):
+  ################# YOUR CODE GOES HERE ##################
+        # we need find the shortest path
+        m = len(self.graph)
+        # sorting the node to node
+        costwight = [self.graph[bits][0] for bits in range(m)]
+        # we also will start the point from the first node in the list
+        # and find the neighbors
+        Neigbors = {bits : self.graph[bits][1:] for bits in range(m)}
+        # Then we need use Dijikstra's algorithm to find MST
+        SmallCost = [float('inf')] * m
+        # store the minimum cost node in the list
+        SmallCost[self.start_node] = costwight[self.start_node]
+
+        w = [(costwight[self.start_node],self.start_node)]
+        pred = {self.start_node:None}
+        while w:
+            # push the value into the heap, pop and return minimum node until the last node
+            CurrentCost, i = heapq.heappop(w)
+            if i == self.end_node:
+                break
+            for s in Neigbors[i]:
+                totalCost = CurrentCost + costwight[s]
+                if totalCost < SmallCost[s]:
+                    SmallCost[s] = totalCost
+                    pred[s]= i
+                    heapq.heappush(w,(totalCost,s))
+
+
+
+        if self.end_node not in pred:
+            return []
+
+
+        distance = []
+        bits = self.end_node
+        while bits is not None:
+            distance.append(bits)
+            bits = pred[bits]
+        distance.reverse()
+        return distance
+        #Return empty
+
+
