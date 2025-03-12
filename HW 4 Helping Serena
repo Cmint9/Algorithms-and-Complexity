@@ -5,11 +5,11 @@ class Solution:
     
     def getSchedule(self):
         list1 = []
-        # We also give the intial list to store
+        # We also give the initial list to store
         currentTime1 = 0
-        # we give the intial time to solve that
+        # we give the initial time to solve that
         rally_sorted = sorted(enumerate(self.rallies),key = lambda x: x[1][1])
-        #sorted the list by deadline,the second element will be tuple
+        #sorted the list by deadline ,the second element will bea  tuple
 
 
         for id,(duration,time) in rally_sorted:
