@@ -9,7 +9,7 @@ class Solution:
         currentTime1 = 0
         # we give the initial time to solve that
         rally_sorted = sorted(enumerate(self.rallies),key = lambda x: x[1][1])
-        #sorted the list by deadline ,the second element will bea  tuple
+        #sorted the list by deadline, the second element will be a tuple
 
 
         for id,(duration,time) in rally_sorted:
