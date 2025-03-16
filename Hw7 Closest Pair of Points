@@ -1,0 +1,70 @@
+# Homework7 
+import sys
+import math
+
+class Solution:
+    def __init__(self, points):
+        self.points = points
+
+    # We have to calculate  smallest Euclidean distance follow the formula
+    def SmallEuldistance(self,point1,point2):
+        return ((point1[0]-point2[0]) ** 2 + (point1[1]-point2[1]) ** 2) ** 0.5
+    # If we want to find the smallest distance between points
+    # we can try use Brute-force algorithm
+    def BruteForce(self,points):
+        MinDistance = float('inf')
+        for point in range(len(points)):
+            for i in range(point +1,len(points)):
+                dis = self.SmallEuldistance(points[point],points[i])
+                MinDistance = min(MinDistance,dis)
+        return MinDistance
+
+
+#after this we can try find the closet points (coordinate) wintin the distance
+    def calculateShort(self,strip,distance):
+
+        MinDistance = distance
+        strip.sort(key= lambda point: point[1])
+        # we can try to sorting the y coordinate
+        for s in range(len(strip)):
+            for w in range(s + 1,len(strip)):
+                if (strip[w][1] - strip[s][1]) >=  MinDistance:
+                    break
+                dis = self.SmallEuldistance(strip[s],strip[w])
+                MinDistance = min(MinDistance,dis)
+        return MinDistance
+
+
+
+    # recursive and to find the coordinate pair
+    def closetPair(self,SortingX,SortingY):
+        q  = len(SortingX)
+
+    #divide the point into left and right
+        if q <= 3:
+            return self.BruteForce(SortingX)
+        Midtance = q // 2
+        MIDpoint = SortingX[Midtance][0]
+        LeftX = SortingX[:Midtance]
+        RightX = SortingX[Midtance:]
+        # Then the y do the same thing
+        LeftY = [p for p in SortingY if p[0] <= MIDpoint]
+        RightY = [p for p in SortingY if p[0] > MIDpoint]
+
+        RecruvLeft = self.closetPair(LeftX,LeftY)
+        RecruvRight = self.closetPair(RightX,RightY)
+        w = min(RecruvLeft,RecruvRight)
+        # We have to make sure the point( coordinate on the line
+        TwopointDis = [p for p in SortingY if abs(p[0]- MIDpoint) < w]
+
+
+
+        return min(w,self.calculateShort(TwopointDis,w))
+
+
+
+    def findClosestPair(self):
+        SortX = sorted(self.points)
+        SortY = sorted(self.points, key = lambda point:( point[1],point[0]))
+
+        return self.closetPair(SortX,SortY)
