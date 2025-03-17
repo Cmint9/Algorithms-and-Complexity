@@ -1,0 +1,38 @@
+# Homework8 
+class Solution:
+
+    def __init__(self, graph, k):
+        self.k = k
+        self.graph = graph
+
+    def output_clauses(self):
+        # if we want to k-color, we have to ensure each node at least have one color
+        # hence, we need a positive literal clause.
+        clauses = []
+
+
+
+
+        for node in self.graph:
+            PoLiterals = [(node, color) for color in range(1, self.k + 1)]
+            clauses.append((PoLiterals, []))
+
+        # we also want to make sure each node at most one color
+        for node in self.graph.keys():
+            for firstColor in range(1, self.k + 1):
+                for secondColor in range(firstColor+1, self.k + 1):
+                    NeLiterals = [(node, firstColor), (node, secondColor)]
+                    clauses.append(([], NeLiterals))
+
+        # if we want to meet the k-coloring, we have to make sure nodes should
+        # not have the same color
+
+        for node, color in self.graph.items():
+            for nextNode in color:
+
+                if nextNode > node:
+                    for color in range(1, self.k + 1):
+                        NeLiterals = [(node, color), (nextNode, color)]
+                        clauses.append(([], NeLiterals))
+
+        return clauses
